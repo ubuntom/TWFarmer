@@ -1,3 +1,4 @@
+javascript:
 /*By UbunTom http://www.gamemash.co.uk */
 function keys(obj)
 {
@@ -12,10 +13,20 @@ function keys(obj)
     return keys;
 }
 
+function checkStorage(key)
+{
+	if (localStorage[key] == undefined || localStorage[key] == "null")localStorage[key]="{}";
+	try
+	{
+		JSON.parse(localStorage[key]);
+	}
+	catch(err)
+	{
+		localStorage[key]="{}";
+	}
+	 
+}
 
-if (localStorage['farmBatch'] == undefined)localStorage['farmBatch']="{}";
-if (localStorage['farmTemplate'] == undefined)localStorage['farmTemplate']="{}";
-if (localStorage['farmVillage'] == undefined)localStorage['farmVillage']="{}";
 
 var keylist, tkeylist, vkeylist;
 var batch, template, village;
@@ -23,7 +34,11 @@ var batch, template, village;
 function showPage()
 {
 
-  batch = JSON.parse(localStorage['farmBatch']);
+	checkStorage('farmBatch');
+	checkStorage('farmTemplate');
+	checkStorage('farmVillage');
+
+	batch = JSON.parse(localStorage['farmBatch']);
 	template = JSON.parse(localStorage['farmTemplate']);
 	village = JSON.parse(localStorage['farmVillage']);
 
@@ -32,7 +47,10 @@ function showPage()
 	document.body.innerHTML = "";
 	document.write('<!DOCTYPE html><html><head><link rel="stylesheet" type="text/css" href="/merged/game.css"><style>td{padding:1px;}</style></head><body id="ds_body" class=" scrollableMenu">');
 
-
+	document.write('<div id="export"></div>');
+	
+	
+	
 	document.write('<div class="vis">Batches<br />');
 	keylist=keys(batch);
 	if (keylist.length==0)
@@ -56,7 +74,8 @@ function showPage()
 		document.write("</table>");
 	}
 	
-	document.write("<a href=\"javascript:createBatch()\">Create batch</a>");
+	document.write("<a href=\"javascript:createBatch()\">Create batch</a><br />");
+	document.write("<a href=\"javascript:importS('farmBatch')\">Import</a> <a href=\"javascript:exportS('farmBatch')\">Export</a>");
 	document.write("</div>");
 
 	document.write('<div class="vis">Templates<br />');
@@ -86,7 +105,8 @@ function showPage()
 		document.write("</table>");
 	}
 	
-	document.write("<a href=\"javascript:createTemplate()\">Create template</a>");
+	document.write("<a href=\"javascript:createTemplate()\">Create template</a><br />");
+	document.write("<a href=\"javascript:importS('farmTemplate')\">Import</a> <a href=\"javascript:exportS('farmTemplate')\">Export</a>");
 	document.write("</div>");
 
 	document.write('<div class="vis">Villages<br />');
@@ -110,13 +130,17 @@ function showPage()
 		}
 		document.write("</table>");
 	}
-	document.write("<a href=\"javascript:createVillage()\">Add village</a>");
+	document.write("<a href=\"javascript:createVillage()\">Add village</a><br />");
+	document.write("<a href=\"javascript:importS('farmVillage')\">Import</a> <a href=\"javascript:exportS('farmVillage')\">Export</a>");
 	document.write("</div>");
-
+	
+	document.write("<br /><div class=\"vis\">Other Tools<br /><a href=\"javascript:delete localStorage['farmBatch'];delete localStorage['farmTemplate'];delete localStorage['farmVillage'];showPage();\">Reset all farm manager data</a></div>");
 }
 
 function createBatch(){
 	var name = prompt("Batch name","");
+	if (name==null)return;
+	
 	if (name.trim()=="")alert("Batch name cannot be empty");
 	else if (batch.hasOwnProperty(name))alert("Name already in use");
 	else
@@ -172,6 +196,8 @@ function deleteBatch(key){
 
 function createTemplate(){
 	var name = prompt("Template name","");
+	if (name==null)return;
+	
 	if (name.trim()=="")alert("Template name cannot be empty");
 	else if (template.hasOwnProperty(name))alert("Name already in use");
 	else
@@ -215,6 +241,7 @@ function deleteTemplate(key){
 
 function createVillage(){
 	var name = prompt("Village coordinates","");
+	if (name==null)return;
 
 	var vils;
 	if (name.search(",")!=-1)vils=name.split(",");
@@ -288,6 +315,18 @@ function deleteVillage(key){
 	localStorage['farmVillage']=JSON.stringify(village);
 	showPage();
 }
+
+function importS(key)
+{
+	localStorage[key]=prompt("Enter data to import");
+	showPage();
+}
+
+function exportS(key)
+{
+	document.getElementById("export").innerHTML=localStorage[key];
+}
+
 
 function gup( name )
 {
@@ -395,5 +434,8 @@ function createXHR(url,postData)
 	req.send(postData);
 	
 }
+
+
+
 
 showPage();
