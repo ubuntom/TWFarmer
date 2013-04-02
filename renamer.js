@@ -23,7 +23,7 @@ var namesDict = {
 "Sully11": new Array("601|707"),
 "unspokenhell": new Array("624|729"),
 "LordDogfather": new Array("629|729"),
-"Marscuit": new Array("651|702"),
+"Marscuit": new Array("651|702","641|709"),
 "Macleane": new Array("685|727")
 };/*A dictionary of each player and an array of their village coords. */
 
