@@ -1,4 +1,3 @@
-javascript:
 /*By UbunTom http://www.gamemash.co.uk */
 function keys(obj)
 {
@@ -343,56 +342,93 @@ function gup( name )
 var vill=gup("village");
 var url = "/game.php?village="+vill+"&try=confirm&screen=place";
 
+var list=['spear','sword','axe','archer','spy','light','marcher','heavy','ram'];
+var sendInProgress="";
+var sendi=0;
+var done=0;
+var total;
+var interval;
+
+function iterSend()
+{
+	var key=sendInProgress;
+	alert("senditer");
+	if (sendi<batch[key].length)
+	{
+		alert(sendi);
+		var xy=batch[key][sendi].split("|");
+	
+		var v=batch[key][sendi];
+
+		var troops;
+		var ok=false;
+		if (village.hasOwnProperty(v))
+		{
+			if (template.hasOwnProperty(village[v]))
+			{
+				troops=template[village[v]];
+				ok=true;
+			}
+		}
+	
+		if(ok==true){
+		
+			var tpostData="";
+			for (var i=0;i<=8;i++)
+			{
+				tpostData+="&"+list[ i ]+"="+troops[ i ];
+			}
+		
+		
+			var postData="attack=Attack&x="+xy[0]+"&y="+xy[1]+tpostData;
+			createXHR(url,postData);
+		
+		
+		}
+		
+		sendi++;
+	}
+	else
+	{
+		alert("Cleared");
+		sendInProgress="";
+		clearInterval(interval);
+	}
+}	
 
 function sendFarm(key){
 
-var list=['spear','sword','axe','archer','spy','light','marcher','heavy','ram'];
 
-
-for (j=0;j<batch[key].length;j++)
-{
-
-	var xy=batch[key][j].split("|");
-	
-	var v=batch[key][j];
-
-	var troops;
-	var ok=false;
-	if (village.hasOwnProperty(v))
+	if (sendInProgress=="")
 	{
-		if (template.hasOwnProperty(village[v]))
-		{
-			troops=template[village[v]];
-			ok=true;
-		}
-	}
+		sendInProgress=key;
+		sendi=0;
+		done=0;
+		document.getElementById("export").innerHTML="Please wait...";
 	
-	if(ok==true){
-		
-		var tpostData="";
-		for (var i=0;i<=8;i++)
-		{
-			tpostData+="&"+list[ i ]+"="+troops[ i ];
-		}
-		
-		
-		var postData="attack=Attack&x="+xy[0]+"&y="+xy[1]+tpostData;
-		createXHR(url,postData);
-		
-		
+		/*for(var a=0;a<2;a++){
+			iterSend();
+		}*/
+		interval=setInterval(iterSend,200);
 	}
+	else alert("Please wait for all attacks to be sent.");
 	
-}
 }
 
 function createXHR(url,postData)
 {
+	alert("Created " + postData);
 	var req=new XMLHttpRequest();
+	req.uurrll=postData;
 	req.onreadystatechange = function(){
+		
 		if (req.readyState==4 && req.status==200)
-		    {
-		    	var parser = new DOMParser();
-		    	var doc = parser.parseFromString(req.responseText, "text/xml");
+		{
+			alert(req.uurrll);
+			
+			
+			var parser = new DOMParser();
+			var doc = parser.parseFromString(req.responseText, "text/xml");
 
 			if (doc.getElementsByName("ch").length==0)return; /*Possible captcha*/
 
@@ -400,33 +436,38 @@ function createXHR(url,postData)
 			var x=doc.getElementsByName("x")[0].value;
 			var y=doc.getElementsByName("y")[0].value;
 			var aid=doc.getElementsByName("action_id")[0].value;
-		
-		
+
+
 			var postData="attack=true&ch="+ch+"&x="+x+"&y="+y+"&action_id="+aid;
-		
-			sp=doc.getElementsByName("spear")[0].value;
-			sw=doc.getElementsByName("sword")[0].value;
-			ax=doc.getElementsByName("axe")[0].value;
-			ar=doc.getElementsByName("archer")[0].value;
-			sc=doc.getElementsByName("spy")[0].value;
-			lc=doc.getElementsByName("light")[0].value;
-			ma=doc.getElementsByName("marcher")[0].value;
-			hc=doc.getElementsByName("heavy")[0].value;
-			rm=doc.getElementsByName("ram")[0].value;
-		
-		
+
+			var sp=doc.getElementsByName("spear")[0].value;
+			var sw=doc.getElementsByName("sword")[0].value;
+			var ax=doc.getElementsByName("axe")[0].value;
+			var ar=doc.getElementsByName("archer")[0].value;
+			var sc=doc.getElementsByName("spy")[0].value;
+			var lc=doc.getElementsByName("light")[0].value;
+			var ma=doc.getElementsByName("marcher")[0].value;
+			var hc=doc.getElementsByName("heavy")[0].value;
+			var rm=doc.getElementsByName("ram")[0].value;
+
+
 			postData+="&spear="+sp+"&sword="+sw+"&axe="+ax+"&archer="+ar+"&spy="+sc+"&light="+lc+"&marcher="+ma+"&heavy="+hc+"&ram="+rm+"&catapult=0&knight=0&snob=0";
 
-		    	
-		    	var url2 = doc.getElementsByTagName("form")[0].getAttribute("action");
-		    	
-		    	var req2=new XMLHttpRequest();
-		    	req2.open("POST",url2,true);
+
+			var url2 = doc.getElementsByTagName("form")[0].getAttribute("action");
+
+			var req2=new XMLHttpRequest();
+			req2.open("POST",url2,true);
 			req2.setRequestHeader("Content-type","application/x-www-form-urlencoded");
 			req2.send(postData);
-
-		    	
-		  }
+			
+			done++;
+			alert("Done " + done);
+			if (done<total)document.getElementById("export").innerHTML="Please wait... Sent: " + done;
+	
+		}
+		
+		
 	};
 	
 	req.open("POST",url,true);
