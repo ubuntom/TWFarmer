@@ -1,3 +1,4 @@
+javascript:
 /*By UbunTom http://www.gamemash.co.uk */
 function keys(obj)
 {
@@ -352,10 +353,10 @@ var interval;
 function iterSend()
 {
 	var key=sendInProgress;
-	alert("senditer");
+	//alert("senditer");
 	if (sendi<batch[key].length)
 	{
-		alert(sendi);
+		//alert(sendi);
 		var xy=batch[key][sendi].split("|");
 	
 		var v=batch[key][sendi];
@@ -390,7 +391,7 @@ function iterSend()
 	}
 	else
 	{
-		alert("Cleared");
+		//alert("Cleared");
 		sendInProgress="";
 		clearInterval(interval);
 	}
@@ -417,14 +418,14 @@ function sendFarm(key){
 
 function createXHR(url,postData)
 {
-	alert("Created " + postData);
+	//alert("Created " + postData);
 	var req=new XMLHttpRequest();
 	req.uurrll=postData;
 	req.onreadystatechange = function(){
 		
 		if (req.readyState==4 && req.status==200)
 		{
-			alert(req.uurrll);
+			//alert(req.uurrll);
 			
 			
 			var parser = new DOMParser();
@@ -462,8 +463,8 @@ function createXHR(url,postData)
 			req2.send(postData);
 			
 			done++;
-			alert("Done " + done);
-			if (done<total)document.getElementById("export").innerHTML="Please wait... Sent: " + done;
+			//alert("Done " + done);
+			if (done<total)document.getElementById("export").innerHTML="Sent: " + done;
 	
 		}
 		
@@ -475,8 +476,5 @@ function createXHR(url,postData)
 	req.send(postData);
 	
 }
-
-
-
 
 showPage();
