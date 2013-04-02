@@ -1,4 +1,3 @@
-javascript:
 /*Ubuntom and Beastfoxxx*/
 
 /*REPLACE "No Escape" with player name + village number.*/
