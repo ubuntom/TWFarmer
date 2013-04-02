@@ -1,4 +1,3 @@
-javascript:
 /*By UbunTom http://www.gamemash.co.uk */
 function keys(obj)
 {
