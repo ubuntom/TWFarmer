@@ -29,16 +29,22 @@ else build="None";
 
 if (localStorage['atts']!=undefined && localStorage['atts']!="")
 {
-var atts=localStorage['atts'].split(",");
-for (i=0;i<atts.length;i++)
-{
-d=atts[ i ].split("|");
-if (d[5]!=a)
-{
-localStorage['atts']+=",";
-localStorage['atts']+=redirect+"|"+att+"|"+ch+"|"+x+"|"+y+"|"+a+"|"+sp+"|"+sw+"|"+ax+"|"+ar+"|"+sc+"|"+lc+"|"+ma+"|"+hc+"|"+rm+"|"+ca+"|"+pa+"|"+no+"|"+build;
-}
-}
+  var atts=localStorage['atts'].split(",");
+  var repeat=false;
+  for (i=0;i<atts.length;i++)
+  {
+    d=atts[ i ].split("|");
+    if (d[5]==a)
+    {
+      repeat=true;
+      break;
+    }
+  }
+  if (repeat==false)
+  {
+    localStorage['atts']+=",";
+    localStorage['atts']+=redirect+"|"+att+"|"+ch+"|"+x+"|"+y+"|"+a+"|"+sp+"|"+sw+"|"+ax+"|"+ar+"|"+sc+"|"+lc+"|"+ma+"|"+hc+"|"+rm+"|"+ca+"|"+pa+"|"+no+"|"+build;
+  }
 }
 else localStorage['atts']=redirect+"|"+att+"|"+ch+"|"+x+"|"+y+"|"+a+"|"+sp+"|"+sw+"|"+ax+"|"+ar+"|"+sc+"|"+lc+"|"+ma+"|"+hc+"|"+rm+"|"+ca+"|"+pa+"|"+no+"|"+build;
 
