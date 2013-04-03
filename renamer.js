@@ -52,8 +52,12 @@ for (i=0;i<keys.length;i++)
 	{
 		var coord = namesDict[name][j];
 		var regCoord = coord.replace("|","\\|");
-		var regEx = new RegExp("No Escape \\(" + regCoord + "\\)","ig");
+		
+		var regEx = new RegExp("[0-9]{7} \\(" + regCoord + "\\)","g");
 		html = html.replace(regEx, name + pad(j) + " (" + coord + ")");	
+		
+		var regEx2 = new RegExp("No Escape \\(" + regCoord + "\\)","ig");
+		html = html.replace(regEx2, name + pad(j) + " (" + coord + ")");	
 	}
 }
 document.body.innerHTML = html;
