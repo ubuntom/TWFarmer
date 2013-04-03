@@ -17,7 +17,7 @@ var namesDict = {
 "Beastfoxxx": new Array("612|719","657|692"),
 "kingscarpus": new Array("641|704","646|703"),
 "Kathula": new Array("605|717","601|718"),
-"BishopMartin": new Array("674|748"),
+"BishopMartin": new Array("674|748","671|743"),
 "Mudfiend": new Array("617|712"),
 "Sully11": new Array("601|707"),
 "unspokenhell": new Array("624|729"),
