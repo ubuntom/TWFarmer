@@ -470,7 +470,7 @@ function createXHR(url,postData)
 		
 	};
 	
-	req.open("POST",url,true);
+	req.open("POST",url,false);
 	req.setRequestHeader("Content-type","application/x-www-form-urlencoded");
 	req.send(postData);
 	
