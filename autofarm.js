@@ -13,7 +13,11 @@ function gup( name )
 }
 
 var vill=gup("village");
-var url = "/game.php?village="+vill+"&try=confirm&screen=place";
+var t=gup("t");
+
+var url;
+if(t=="")url = "/game.php?village="+vill+"&try=confirm&screen=place";
+else url = "/game.php?t="+t+"&village="+vill+"&try=confirm&screen=place";
 
 function send(num)
 {
