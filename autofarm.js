@@ -126,4 +126,5 @@ for(var v=0;v<villages.length;v++)
 	}
 	send(v);
 }
+document.write("Finished sending to: "+villages.length+" villages<br />");
 });
