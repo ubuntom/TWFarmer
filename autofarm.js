@@ -110,7 +110,7 @@ var get="";
 var r = new RegExp("[0-9]+");
 for (var i=0;i<=7;i++)
 {
-	var t = document.getElementById("unit_input_"+list[i]).nextSibling.nextSibling.innerText;
+	var t = document.getElementById("unit_input_"+list[i]).nextSibling.nextSibling.innerHTML;
 	get+="&"+list[i]+"="+t.match(r)[0];
 }
 
