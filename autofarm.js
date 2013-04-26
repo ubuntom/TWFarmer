@@ -54,9 +54,8 @@ function createXHR(url,postData)
 		{
 			
 			var parser = new DOMParser();
-			var doc;
-			if (navigator.appName=="Netscape")doc = parser.parseFromString(req.responseText, "text/html");
-			else doc = parser.parseFromString(req.responseText, "text/xml");
+			var doc = parser.parseFromString(req.responseText, "text/html");
+			if (doc==null)doc = parser.parseFromString(req.responseText, "text/xml");
 
 			if (doc.getElementsByName("ch").length==0)
 			{
