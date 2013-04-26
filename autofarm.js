@@ -38,7 +38,6 @@ function send(num)
 	var postData="attack=Attack&x="+x+"&y="+y+tpostData;
 	createXHR(url,postData);
 	
-	document.write("Sent to: " + x + "|" + y + "<br />");
 	
 	return true;
 
@@ -55,11 +54,12 @@ function createXHR(url,postData)
 		{
 			
 			var parser = new DOMParser();
-			var doc = parser.parseFromString(req.responseText, "text/xml");
+			var doc;
+			if (navigator.appName=="Netscape")doc = parser.parseFromString(req.responseText, "text/html");
+			else doc = parser.parseFromString(req.responseText, "text/xml");
 
 			if (doc.getElementsByName("ch").length==0)
 			{
-				document.write("Possible captcha found.<br />");
 				return false;
 			}
 
@@ -118,15 +118,12 @@ for (var i=0;i<=7;i++)
 
 
 $.getScript("http://gamemash.co.uk/villagelist.php?id="+vill+get,function(){
-document.write("Sending to: "+villages.length+" villages<br />");
 for(var v=0;v<villages.length;v++)
 {
 	if(ok==false)
 	{
-		document.write("Sending cancelled");
 		break;
 	}
 	send(v);
 }
-document.write("Finished");
 });
